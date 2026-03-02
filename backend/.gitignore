@@ -1,0 +1,9 @@
+.env
+node_modules
+.vercel
+dist/
+.env.local
+
+
+
+/src/generated/prisma
