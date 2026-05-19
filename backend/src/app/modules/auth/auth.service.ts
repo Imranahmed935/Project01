@@ -4,6 +4,30 @@ import ApiError from "../../errors/ApiError";
 import { jwtHelper } from "../../helper/jwtHelper";
 import config from "../../../config";
 import httpStatus from "http-status";
+import { Secret } from "jsonwebtoken";
+
+
+const getMe = async (cookies: any) => {
+  const accessToken = cookies?.accessToken;
+  console.log(accessToken,"watch 2")
+
+  if (!accessToken) {
+    throw new ApiError(401, "Access Token not found");
+  }
+
+  const decodedData = jwtHelper.verifyToken(
+    accessToken,
+    config.jwt.jwt_secret as Secret
+  );
+
+  const userData = await prisma.user.findUniqueOrThrow({
+    where: {
+      email: decodedData.email,
+    },
+  });
+
+  return userData;
+};
 
 const login = async (payload: { email: string; password: string }) => {
   const user = await prisma.user.findFirstOrThrow({
@@ -37,4 +61,5 @@ const login = async (payload: { email: string; password: string }) => {
 
 export const authService = {
   login,
+  getMe
 };

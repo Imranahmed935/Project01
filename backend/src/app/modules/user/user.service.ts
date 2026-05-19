@@ -17,6 +17,15 @@ const registerUser = async (req: Request) => {
   return user;
 };
 
+const getUserById = async (email:string) => {
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+  return user;
+};
+
+
 export const userService = {
   registerUser,
+  getUserById
 };

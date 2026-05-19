@@ -11,9 +11,11 @@ model User {
     contactNumber         String?
     rating                Int       @default(0)
     userStatus            String    @default("ACTIVE")
+    boards Board[]
     lastLoginAt DateTime?
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @updatedAt
+    
 
     @@map("users")
 }
